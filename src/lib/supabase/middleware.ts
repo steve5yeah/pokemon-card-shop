@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { supabasePublicEnv } from "@/lib/env";
 
 /**
  * 로그인이 필요한 경로 (앞부분만 맞으면 보호)
@@ -17,26 +18,40 @@ const PROTECTED_PATHS = ["/cart", "/checkout", "/orders", "/mypage", "/admin"];
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
-          supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
-        },
+  /**
+   * 환경 변수가 비어 있으면 무엇이 빠졌는지 로그에 적고 멈춥니다.
+   * 그러지 않으면 "middleware 가 실패했다"는 500 오류만 떠서 원인을 알 수 없습니다.
+   * (Vercel 의 Logs 탭에서 이 메시지를 볼 수 있습니다)
+   */
+  let supabaseUrl: string;
+  let supabaseAnonKey: string;
+  try {
+    const env = supabasePublicEnv();
+    supabaseUrl = env.url;
+    supabaseAnonKey = env.anonKey;
+  } catch (cause) {
+    console.error(
+      `[설정 오류] ${cause instanceof Error ? cause.message : String(cause)}`,
+    );
+    throw cause;
+  }
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value),
+        );
+        supabaseResponse = NextResponse.next({ request });
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options),
+        );
       },
     },
-  );
+  });
 
   // 이 호출이 세션을 갱신합니다. createServerClient와 이 줄 사이에 다른 코드를 넣지 마세요.
   const {
@@ -45,14 +60,14 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const needsLogin = PROTECTED_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
   );
 
   if (!user && needsLogin) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("next", pathname);
-    return NextResponse.redirect(url);
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/login";
+    redirectUrl.searchParams.set("next", pathname);
+    return NextResponse.redirect(redirectUrl);
   }
 
   return supabaseResponse;
