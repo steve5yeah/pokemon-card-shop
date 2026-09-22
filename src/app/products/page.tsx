@@ -103,20 +103,25 @@ export default async function ProductsPage({
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <header>
-        <h1 className="text-2xl font-bold text-ink-900">카드 둘러보기</h1>
-        <p className="mt-1.5 text-sm text-ink-600">
+        <span className="ribbon cut-sm">ALL CARDS</span>
+        <h1 className="mt-2.5 text-[1.7rem] font-black tracking-tight text-ink-900">
+          카드 둘러보기
+        </h1>
+        <p className="mt-1 text-sm text-ink-600">
           희귀도 · 타입 · 확장팩 · 가격으로 좁혀 보세요.
         </p>
       </header>
 
-      <FilterBar filters={filters} sets={sets} />
+      <div className="card p-4 sm:p-5">
+        <FilterBar filters={filters} sets={sets} />
+      </div>
 
       {/* ── 결과 개수 · 품절 포함 · 정렬 ── */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-y border-ink-100 py-2.5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-ink-700">
+          <span className="text-sm font-extrabold text-ink-900">
             {products.length}장
           </span>
           {filtered && (
@@ -128,7 +133,7 @@ export default async function ProductsPage({
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href={productsHref(filters, { soldout: filters.soldout ? "" : "1" })}
-            className={`chip btn-sm ${filters.soldout ? "chip-on" : ""}`}
+            className={`chip ${filters.soldout ? "chip-on" : ""}`}
           >
             품절 포함
           </Link>
@@ -137,27 +142,27 @@ export default async function ProductsPage({
       </div>
 
       {error ? (
-        <p className="card px-4 py-6 text-center text-sm text-red-700">
+        <p className="card border-poke-500 px-4 py-6 text-center text-sm font-semibold text-poke-700">
           카드를 불러오지 못했습니다: {explainSupabaseError(error.message)}
         </p>
       ) : products.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-ink-200 px-4 py-16 text-center">
-          <div className="mx-auto w-fit opacity-20">
-            <PokeballLogo size={64} />
+        <div className="card px-4 py-16 text-center">
+          <div className="mx-auto w-fit opacity-15">
+            <PokeballLogo size={72} />
           </div>
-          <p className="mt-4 text-ink-600">
+          <p className="mt-4 font-bold text-ink-700">
             {filtered
               ? "조건에 맞는 카드가 없습니다."
               : "아직 등록된 카드가 없습니다."}
           </p>
           {filtered && (
-            <Link href="/products" className="btn btn-outline mt-5">
+            <Link href="/products" className="btn btn-primary mt-5">
               조건 모두 지우기
             </Link>
           )}
         </div>
       ) : (
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
           {products.map((product) => (
             <li key={product.id}>
               <ProductCard product={product} />

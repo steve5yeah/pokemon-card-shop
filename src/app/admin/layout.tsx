@@ -22,7 +22,7 @@ export default async function AdminLayout({
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center gap-2 border-b border-ink-200 pb-4">
+      <div className="mb-6 flex flex-wrap items-center gap-2 border-b-[3px] border-ink-900 pb-4">
         <span className="rounded-md bg-ink-900 px-2 py-1 text-[0.7rem] font-bold text-volt-300">
           관리자
         </span>

@@ -33,7 +33,7 @@ export default async function AdminProductsPage({
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink-900">카드 관리</h1>
+          <h1 className="text-[1.7rem] font-black tracking-tight text-ink-900">카드 관리</h1>
           <p className="mt-1.5 text-sm text-ink-600">
             전체 {products.length}장 · 숨김 {hidden}장 · 품절임박 {lowStock}장
           </p>
@@ -44,19 +44,19 @@ export default async function AdminProductsPage({
       </div>
 
       {saved === "1" && (
-        <p className="mt-4 rounded-xl bg-poke-50 px-4 py-2.5 text-sm text-poke-800">
+        <p className="mt-4 rounded-lg border-2 border-poke-300 bg-poke-50 px-4 py-2.5 text-sm text-poke-800">
           ✅ 저장했습니다.
         </p>
       )}
 
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="mt-4 rounded-lg border-2 border-poke-500 bg-poke-50 px-4 py-3 text-sm font-semibold text-poke-800">
           카드를 불러오지 못했습니다: {error.message}
         </p>
       )}
 
       <div className="card mt-5 px-4">
-        <ul className="divide-y divide-ink-100">
+        <ul className="divide-y-2 divide-ink-100">
           {products.map((product) => (
             <AdminProductRow key={product.id} product={product} />
           ))}

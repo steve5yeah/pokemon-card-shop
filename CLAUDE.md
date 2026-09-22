@@ -51,10 +51,32 @@ Claude는 아래 규칙을 항상 지켜 주세요.
 | 만드는 것 | 포켓몬 트레이딩 카드 쇼핑몰 (장바구니 · 결제 · 주문내역 · 관리자) |
 | 화면 만드는 도구 | **Next.js 15** (App Router) + React 19 + TypeScript |
 | 디자인 | **Tailwind CSS v4** — 색은 `src/app/globals.css`의 `@theme`에 정의 (`poke-*` 빨강, `volt-*` 노랑, `ink-*` 남색) |
+| 아이콘 | `src/components/Icons.tsx` 의 SVG — **이모지를 쓰지 않습니다** (기기마다 모양이 달라짐) |
 | 회원·데이터 보관 | **Supabase** — 프로젝트 `pokemon-card-shop` / ref `ezpigwtshysvtmnaptwv` (ap-northeast-2) |
 | 결제 | **토스페이먼츠 결제위젯 v2** (`@tosspayments/tosspayments-sdk`) — 지금은 문서용 테스트 키 |
 | 인터넷 공개(배포) | **Vercel** (7단계에서 연결) |
 | 실행 | `npm run dev` → http://localhost:3000 |
+
+### 디자인 규칙 🎨
+
+포켓몬 공식 사이트(두꺼운 검정 아웃라인 · 모서리를 비스듬히 자른 각진 블록)와
+**진짜 포켓몬 카드의 금색 테두리**를 참고해 만들었습니다. 새 화면을 만들 때도 이 규칙을 따릅니다.
+
+| 클래스 | 쓰는 곳 |
+| --- | --- |
+| `.tcg` + `.tcg-in` | 카드를 **진짜 트레이딩 카드처럼** 보이게 하는 금색 테두리 두 겹 |
+| `.holo` | 아트레어 이상 등급의 무지개 반짝임 (그림칸에 붙임) |
+| `.thumb` | 목록에 들어가는 작은 카드 그림 (장바구니 · 주문내역 · 관리자) |
+| `.night` / `.night-stars` | 어두운 쇼케이스 배경 (첫 화면 · 푸터) |
+| `.ribbon` | 제목 위에 붙는 검정 라벨 (`CART`, `ORDER` 처럼 영어 한 단어) |
+| `.cut` / `.cut-sm` / `.cut-both` | 모서리를 비스듬히 자르는 모양 |
+| `.btn-primary` / `.btn-volt` / `.btn-outline` / `.btn-ghost` | 버튼 4종 |
+| `.card` / `.card-dark` / `.card-night` | 상자 3종 (`card-dark` 는 합계·금액처럼 결론을 담는 칸) |
+
+- 테두리는 **2px `ink-900`**, 그림자는 흐림 없는 **`3px 3px 0`** (스티커처럼 톡 튀어나와 보이게).
+- ⚠️ `.cut` 계열은 `clip-path` 라서 **테두리까지 같이 잘립니다.** 배경이 꽉 찬 요소에만 씁니다.
+- ⚠️ 아주 좁은 화면(320px)에서 줄이 넘치지 않는지 꼭 확인합니다.
+  `document.documentElement.scrollWidth - clientWidth` 가 **0** 이어야 합니다.
 
 ### Supabase 주의사항 ⚠️
 

@@ -125,8 +125,12 @@ npm run build   # 배포 전 확인
 
 ```bash
 npm run build
-grep -r "test_gsk_\|sb_secret_" .next/static   # 아무것도 안 나와야 정상
+grep -rE "test_gsk_[A-Za-z0-9]|sb_secret_[A-Za-z0-9]" .next/static   # 아무것도 안 나와야 정상
 ```
+
+> 뒤에 `[A-Za-z0-9]` 를 붙인 이유: Supabase 라이브러리 안에 키 종류를 판별하는
+> `startsWith("sb_secret_")` 코드가 들어 있어, 접두사만 찾으면 **키가 새지 않았는데도**
+> 걸립니다. 진짜 키는 접두사 뒤에 글자가 이어지므로 이렇게 찾아야 정확합니다.
 
 ## 배포 (Vercel)
 

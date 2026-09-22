@@ -10,6 +10,19 @@ import {
   type ProductWithSet,
 } from "@/lib/products";
 
+/**
+ * 카드 한 장.
+ *
+ * 진짜 포켓몬 카드의 구조를 그대로 흉내 냈습니다.
+ *   ┌─ 금색 테두리 (.tcg) ─────────┐
+ *   │ 카드 이름            ● 타입   │
+ *   │ ┌─ 그림칸 ─────────────────┐ │
+ *   │ │      (포켓몬 일러스트)     │ │
+ *   │ └─────────────────────────┘ │
+ *   │ 확장팩 이름              등급 │
+ *   └─────────────────────────────┘
+ *        가격 / 재고   ← 테두리 바깥
+ */
 export default function ProductCard({ product }: { product: ProductWithSet }) {
   const type = CARD_TYPES[product.card_type];
   const rarity = RARITIES[product.rarity];
@@ -19,69 +32,80 @@ export default function ProductCard({ product }: { product: ProductWithSet }) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="poke-card card block overflow-hidden"
+      className="poke-card block rounded-[0.65rem]"
+      title={product.name}
     >
-      {/* ── 카드 그림 (타입 색 액자 + 홀로그램) ── */}
-      <div
-        className={`poke-art ${rarity.holo ? "poke-holo" : ""} m-2 aspect-[3/4] bg-gradient-to-br ${type.frame}`}
-      >
-        {image ? (
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 22vw"
-            className={`object-contain p-3 ${soldOut ? "opacity-40 grayscale" : ""}`}
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center opacity-20">
-            <PokeballLogo size={56} />
-          </div>
-        )}
-
-        {/* 희귀도 도장 — 왼쪽 위 */}
-        <span
-          className={`absolute left-1.5 top-1.5 rounded-md px-1.5 py-0.5 text-[0.6rem] font-bold leading-none shadow-sm ${rarity.badge}`}
+      {/* ─────────── 금색 테두리 ─────────── */}
+      <div className="tcg">
+        <div
+          className={`tcg-in flex aspect-[5/7] flex-col bg-gradient-to-br ${type.frame}`}
         >
-          {rarity.short}
-        </span>
+          {/* 카드 이름 줄 */}
+          <div className="flex items-center gap-1 px-1.5 pt-1.5">
+            <h3 className="min-w-0 flex-1 truncate text-[0.74rem] font-extrabold leading-tight text-ink-900">
+              {product.name}
+            </h3>
+            <span
+              className={`h-3 w-3 shrink-0 rounded-full border border-ink-900/50 ${type.dot}`}
+              aria-hidden
+            />
+          </div>
 
-        {soldOut && (
-          <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 bg-ink-900/75 py-1 text-center text-xs font-bold text-white">
-            품절
-          </span>
-        )}
+          {/* 그림칸 — 실제 카드도 그림 둘레에 얇은 선이 한 겹 더 있습니다 */}
+          <div
+            className={`relative mx-1.5 my-1 flex-1 overflow-hidden rounded-[0.2rem] border border-ink-900/35 bg-white/40 ${
+              rarity.holo ? "holo" : ""
+            }`}
+          >
+            {image ? (
+              <Image
+                src={image}
+                alt={product.name}
+                fill
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 22vw"
+                className={`object-contain p-1.5 ${
+                  soldOut ? "opacity-40 grayscale" : ""
+                }`}
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center opacity-25">
+                <PokeballLogo size={44} />
+              </div>
+            )}
+
+            {soldOut && (
+              <span className="absolute inset-x-0 top-1/2 z-[3] -translate-y-1/2 border-y-2 border-ink-900 bg-ink-900/85 py-1 text-center text-[0.7rem] font-extrabold tracking-widest text-white">
+                품절
+              </span>
+            )}
+          </div>
+
+          {/* 확장팩 · 등급 줄 */}
+          <div className="flex items-center justify-between gap-1 px-1.5 pb-1.5">
+            <span className="min-w-0 truncate text-[0.58rem] font-bold text-ink-900/60">
+              {product.sets?.name ?? " "}
+            </span>
+            <span
+              className={`shrink-0 rounded border border-ink-900/40 px-1 py-px text-[0.56rem] font-extrabold leading-none ${rarity.badge}`}
+            >
+              {rarity.short}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* ── 카드 정보 ── */}
-      <div className="px-3 pb-3.5">
-        <div className="flex items-center gap-1.5">
-          <span
-            className={`rounded px-1.5 py-0.5 text-[0.6rem] font-bold leading-none ${type.badge}`}
-          >
-            {type.label}
-          </span>
-          {product.sets && (
-            <span className="truncate text-[0.68rem] text-ink-400">
-              {product.sets.name}
-            </span>
-          )}
-        </div>
-
-        <h3 className="mt-1.5 truncate text-[0.95rem] font-bold text-ink-900">
-          {product.name}
-        </h3>
-
-        <p className="mt-1 font-bold text-poke-600">
+      {/* ─────────── 테두리 바깥: 값 ─────────── */}
+      <div className="mt-2 px-0.5">
+        <p className="text-[1.05rem] font-extrabold leading-none text-ink-900">
           {formatPrice(product.price)}
         </p>
         <p
-          className={`text-[0.7rem] ${
+          className={`mt-1 text-[0.7rem] font-bold ${
             soldOut
               ? "text-ink-400"
               : product.stock <= 3
-                ? "font-semibold text-poke-500"
-                : "text-ink-400"
+                ? "text-poke-600"
+                : "text-ink-500"
           }`}
         >
           {stockLabel(product.stock)}

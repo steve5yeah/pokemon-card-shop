@@ -129,7 +129,7 @@ export default function PaymentWidget({
       )}
 
       {error && (
-        <div className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mt-4 rounded-lg border-2 border-poke-500 bg-poke-50 px-4 py-3 text-sm font-semibold text-poke-800">
           <p>{error}</p>
           <Link href="/cart" className="mt-1.5 inline-block font-semibold underline">
             장바구니로 돌아가기 →

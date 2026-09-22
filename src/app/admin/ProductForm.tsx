@@ -172,7 +172,7 @@ export default function ProductForm({
         </div>
       </div>
 
-      <p className="rounded-xl bg-volt-50 px-3 py-2 text-xs leading-relaxed text-volt-800">
+      <p className="rounded-lg border-2 border-volt-500 bg-volt-50 px-3 py-2 text-xs leading-relaxed font-semibold text-volt-900">
         도감번호만 적으면 PokeAPI 의 공식 일러스트가 자동으로 나옵니다. (리자몽
         6, 피카츄 25, 뮤츠 150) 직접 올린 사진이 있으면 그 사진을 씁니다.
       </p>
@@ -211,7 +211,7 @@ export default function ProductForm({
       </label>
 
       {state.error && (
-        <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-lg border-2 border-poke-500 bg-poke-50 px-3 py-2 text-sm font-semibold text-poke-800">
           {state.error}
         </p>
       )}

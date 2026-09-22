@@ -19,13 +19,13 @@ export default function LoginForm() {
       <input type="hidden" name="next" value={next} />
 
       {confirmFailed && (
-        <p className="rounded-xl bg-volt-50 px-3 py-2 text-sm text-volt-800">
+        <p className="rounded-lg border-2 border-volt-500 bg-volt-50 px-3 py-2 text-sm font-semibold text-volt-900">
           메일 확인 링크가 만료되었거나 잘못되었습니다. 다시 로그인해 보세요.
         </p>
       )}
 
       {next !== "/" && (
-        <p className="rounded-xl bg-poke-50 px-3 py-2 text-sm text-poke-700">
+        <p className="rounded-lg border-2 border-poke-300 bg-poke-50 px-3 py-2 text-sm text-poke-700">
           로그인이 필요한 화면입니다. 로그인하면 바로 돌아갑니다.
         </p>
       )}
@@ -62,7 +62,7 @@ export default function LoginForm() {
       </div>
 
       {state.error && (
-        <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-lg border-2 border-poke-500 bg-poke-50 px-3 py-2 text-sm font-semibold text-poke-800">
           {state.error}
         </p>
       )}

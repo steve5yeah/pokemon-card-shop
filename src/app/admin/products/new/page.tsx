@@ -20,7 +20,7 @@ export default async function NewProductPage() {
       >
         ← 카드 관리
       </Link>
-      <h1 className="mt-4 text-2xl font-bold text-ink-900">카드 등록</h1>
+      <h1 className="mt-4 text-[1.7rem] font-black tracking-tight text-ink-900">카드 등록</h1>
 
       <div className="card mt-5 p-5">
         <ProductForm sets={(data ?? []) as ProductSet[]} />

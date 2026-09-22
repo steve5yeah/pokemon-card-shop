@@ -37,7 +37,8 @@ export default async function MyPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-bold text-ink-900">내 정보</h1>
+      <span className="ribbon cut-sm">PROFILE</span>
+      <h1 className="mt-2.5 text-[1.7rem] font-black tracking-tight text-ink-900">내 정보</h1>
 
       {admin && (
         <Link
@@ -78,7 +79,7 @@ export default async function MyPage() {
             고치기
           </Link>
         </div>
-        <div className="flex justify-between gap-3 border-t border-ink-100 pt-2.5">
+        <div className="flex justify-between gap-3 border-t-2 border-ink-100 pt-2.5">
           <dt className="text-ink-500">닉네임</dt>
           <dd className="font-medium text-ink-800">
             {profile?.nickname ?? "—"}

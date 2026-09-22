@@ -47,8 +47,13 @@ export default async function OrdersPage({
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-ink-900">주문 내역</h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <span className="ribbon cut-sm">MY ORDERS</span>
+          <h1 className="mt-2.5 text-[1.7rem] font-black tracking-tight text-ink-900">
+            주문 내역
+          </h1>
+        </div>
         <Link
           href={showAll ? "/orders" : "/orders?all=1"}
           className={`chip btn-sm ${showAll ? "chip-on" : ""}`}
@@ -58,13 +63,13 @@ export default async function OrdersPage({
       </div>
 
       {error && (
-        <p className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="mt-6 rounded-lg border-2 border-poke-500 bg-poke-50 px-4 py-3 text-sm font-semibold text-poke-800">
           주문 내역을 불러오지 못했습니다: {error.message}
         </p>
       )}
 
       {!error && orders.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-dashed border-ink-200 px-4 py-16 text-center">
+        <div className="mt-8 card border-dashed px-4 py-16 text-center">
           <div className="mx-auto w-fit opacity-20">
             <PokeballLogo size={64} />
           </div>

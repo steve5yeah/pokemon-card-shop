@@ -12,17 +12,23 @@ export const PRODUCT_IMAGE_BUCKET = "product-images";
 
 /* ------------------------------ 카드 타입 ------------------------------ */
 
+/**
+ * frame — 카드 그림 뒤에 깔리는 배경입니다.
+ *   진한 색에서 옅은 색으로 흐르게 두어, 위에 얹힌 포켓몬이 떠 보이게 합니다.
+ *   (연한 파스텔만 쓰면 그림과 배경이 붙어 보여 흐릿해집니다)
+ * glow — 상세 화면에서 그림 뒤에 퍼뜨리는 빛 색입니다.
+ */
 export const CARD_TYPES = {
-  grass:     { label: "풀",     badge: "bg-lime-600 text-white",       dot: "bg-lime-600",    frame: "from-lime-200 to-lime-50" },
-  fire:      { label: "불꽃",   badge: "bg-orange-500 text-white",     dot: "bg-orange-500",  frame: "from-orange-200 to-orange-50" },
-  water:     { label: "물",     badge: "bg-sky-500 text-white",        dot: "bg-sky-500",     frame: "from-sky-200 to-sky-50" },
-  lightning: { label: "전기",   badge: "bg-amber-400 text-amber-950",  dot: "bg-amber-400",   frame: "from-amber-200 to-amber-50" },
-  psychic:   { label: "에스퍼", badge: "bg-fuchsia-500 text-white",    dot: "bg-fuchsia-500", frame: "from-fuchsia-200 to-fuchsia-50" },
-  fighting:  { label: "격투",   badge: "bg-red-700 text-white",        dot: "bg-red-700",     frame: "from-red-200 to-red-50" },
-  darkness:  { label: "악",     badge: "bg-slate-700 text-white",      dot: "bg-slate-700",   frame: "from-slate-300 to-slate-50" },
-  metal:     { label: "강철",   badge: "bg-slate-400 text-slate-950",  dot: "bg-slate-400",   frame: "from-slate-200 to-slate-50" },
-  dragon:    { label: "드래곤", badge: "bg-indigo-600 text-white",     dot: "bg-indigo-600",  frame: "from-indigo-200 to-indigo-50" },
-  colorless: { label: "무색",   badge: "bg-stone-400 text-stone-950",  dot: "bg-stone-400",   frame: "from-stone-200 to-stone-50" },
+  grass:     { label: "풀",     badge: "bg-lime-600 text-white",      dot: "bg-lime-600",    frame: "from-lime-400 via-lime-200 to-lime-50",           glow: "bg-lime-400" },
+  fire:      { label: "불꽃",   badge: "bg-orange-600 text-white",    dot: "bg-orange-500",  frame: "from-orange-500 via-amber-200 to-orange-50",      glow: "bg-orange-400" },
+  water:     { label: "물",     badge: "bg-sky-600 text-white",       dot: "bg-sky-500",     frame: "from-sky-500 via-sky-200 to-sky-50",              glow: "bg-sky-400" },
+  lightning: { label: "전기",   badge: "bg-amber-400 text-amber-950", dot: "bg-amber-400",   frame: "from-amber-400 via-yellow-200 to-yellow-50",      glow: "bg-amber-300" },
+  psychic:   { label: "에스퍼", badge: "bg-fuchsia-600 text-white",   dot: "bg-fuchsia-500", frame: "from-fuchsia-500 via-fuchsia-200 to-fuchsia-50",  glow: "bg-fuchsia-400" },
+  fighting:  { label: "격투",   badge: "bg-red-700 text-white",       dot: "bg-red-700",     frame: "from-red-600 via-orange-300 to-red-50",           glow: "bg-red-500" },
+  darkness:  { label: "악",     badge: "bg-slate-800 text-white",     dot: "bg-slate-700",   frame: "from-slate-700 via-slate-400 to-slate-100",       glow: "bg-slate-600" },
+  metal:     { label: "강철",   badge: "bg-slate-500 text-white",     dot: "bg-slate-400",   frame: "from-slate-500 via-slate-300 to-slate-50",        glow: "bg-slate-400" },
+  dragon:    { label: "드래곤", badge: "bg-indigo-600 text-white",    dot: "bg-indigo-600",  frame: "from-indigo-600 via-violet-300 to-indigo-50",     glow: "bg-indigo-500" },
+  colorless: { label: "무색",   badge: "bg-stone-500 text-white",     dot: "bg-stone-400",   frame: "from-stone-400 via-stone-200 to-stone-50",        glow: "bg-stone-400" },
 } as const;
 
 export type CardType = keyof typeof CARD_TYPES;
@@ -34,15 +40,19 @@ export function isCardType(value: unknown): value is CardType {
 
 /* ------------------------------- 희귀도 ------------------------------- */
 
-/** holo = true 면 카드에 반짝이는 홀로그램 효과를 넣습니다 */
+/**
+ * holo = true 면 카드에 반짝이는 홀로그램 효과를 넣습니다.
+ * badge 는 카드 위에 찍히는 등급 도장 색입니다. 금색 테두리 위에 얹히므로
+ * 연한 색은 묻혀 버립니다 — 진한 색 + 흰 글자로 둡니다.
+ */
 export const RARITIES = {
-  common:           { label: "커먼",           short: "C",   badge: "bg-ink-100 text-ink-600",                 holo: false },
-  uncommon:         { label: "언커먼",         short: "U",   badge: "bg-emerald-100 text-emerald-800",         holo: false },
-  rare:             { label: "레어",           short: "R",   badge: "bg-sky-100 text-sky-800",                 holo: false },
-  double_rare:      { label: "더블레어",       short: "RR",  badge: "bg-violet-100 text-violet-800",           holo: false },
-  art_rare:         { label: "아트레어",       short: "AR",  badge: "bg-amber-100 text-amber-900",             holo: true  },
-  special_art_rare: { label: "스페셜아트레어", short: "SAR", badge: "bg-amber-200 text-amber-900",             holo: true  },
-  ur:               { label: "울트라레어",     short: "UR",  badge: "bg-ink-900 text-volt-300",                holo: true  },
+  common:           { label: "커먼",           short: "C",   badge: "bg-white text-ink-800",                                           holo: false },
+  uncommon:         { label: "언커먼",         short: "U",   badge: "bg-emerald-500 text-white",                                       holo: false },
+  rare:             { label: "레어",           short: "R",   badge: "bg-sky-600 text-white",                                           holo: false },
+  double_rare:      { label: "더블레어",       short: "RR",  badge: "bg-violet-600 text-white",                                        holo: false },
+  art_rare:         { label: "아트레어",       short: "AR",  badge: "bg-amber-400 text-amber-950",                                     holo: true  },
+  special_art_rare: { label: "스페셜아트레어", short: "SAR", badge: "bg-gradient-to-r from-fuchsia-400 via-amber-300 to-sky-400 text-ink-900", holo: true  },
+  ur:               { label: "울트라레어",     short: "UR",  badge: "bg-ink-900 text-volt-300",                                        holo: true  },
 } as const;
 
 export type Rarity = keyof typeof RARITIES;

@@ -34,12 +34,12 @@ export default function CartTable({ lines }: { lines: CartLine[] }) {
   return (
     <div>
       {error && (
-        <p className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mb-3 rounded-lg border-2 border-poke-500 bg-poke-50 px-3 py-2 text-sm font-semibold text-poke-800">
           {error}
         </p>
       )}
 
-      <ul className="divide-y divide-ink-100">
+      <ul className="divide-y-2 divide-ink-100">
         {lines.map((line) => {
           const type = CARD_TYPES[line.product.card_type];
           const rarity = RARITIES[line.product.rarity];
@@ -55,7 +55,7 @@ export default function CartTable({ lines }: { lines: CartLine[] }) {
               {/* 카드 그림 */}
               <Link
                 href={`/products/${line.productId}`}
-                className={`poke-art h-24 w-[4.5rem] shrink-0 bg-gradient-to-br ${type.frame}`}
+                className={`thumb h-24 w-[4.5rem] shrink-0 bg-gradient-to-br ${type.frame}`}
               >
                 {image ? (
                   <Image
@@ -78,12 +78,12 @@ export default function CartTable({ lines }: { lines: CartLine[] }) {
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
                       <span
-                        className={`rounded px-1.5 py-0.5 text-[0.6rem] font-bold leading-none ${type.badge}`}
+                        className={`rounded border border-ink-900 px-1.5 py-0.5 text-[0.6rem] font-extrabold leading-none ${type.badge}`}
                       >
                         {type.label}
                       </span>
                       <span
-                        className={`rounded px-1.5 py-0.5 text-[0.6rem] font-bold leading-none ${rarity.badge}`}
+                        className={`rounded border border-ink-900 px-1.5 py-0.5 text-[0.6rem] font-extrabold leading-none ${rarity.badge}`}
                       >
                         {rarity.short}
                       </span>
@@ -113,9 +113,12 @@ export default function CartTable({ lines }: { lines: CartLine[] }) {
                   </button>
                 </div>
 
-                <div className="mt-2.5 flex items-center justify-between gap-3">
+                {/* flex-wrap 을 둔 이유: 아주 좁은 화면(320px 정도)에서는
+                    수량 버튼과 금액이 한 줄에 다 안 들어가 가로 스크롤이
+                    생깁니다. 자리가 부족하면 금액이 아래로 내려가게 합니다. */}
+                <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                   {/* 수량 */}
-                  <div className="flex items-center gap-1">
+                  <div className="flex shrink-0 items-center gap-1">
                     <button
                       type="button"
                       onClick={() =>
@@ -147,7 +150,7 @@ export default function CartTable({ lines }: { lines: CartLine[] }) {
                     </button>
                   </div>
 
-                  <p className="font-bold text-ink-900 tabular-nums">
+                  <p className="shrink-0 font-extrabold text-ink-900 tabular-nums">
                     {formatPrice(line.lineTotal)}
                   </p>
                 </div>

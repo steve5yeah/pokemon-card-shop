@@ -53,7 +53,8 @@ export default async function PayPage({
 
   return (
     <div className="mx-auto max-w-lg">
-      <h1 className="text-2xl font-bold text-ink-900">결제하기</h1>
+      <span className="ribbon cut-sm">PAYMENT</span>
+      <h1 className="mt-2.5 text-[1.7rem] font-black tracking-tight text-ink-900">결제하기</h1>
 
       <dl className="card mt-5 space-y-2 p-4 text-sm">
         <div className="flex justify-between gap-3">
@@ -70,7 +71,7 @@ export default async function PayPage({
           <dt className="text-ink-500">받는 분</dt>
           <dd className="font-medium text-ink-800">{order.receiver_name}</dd>
         </div>
-        <div className="flex items-baseline justify-between gap-3 border-t border-ink-100 pt-2">
+        <div className="flex items-baseline justify-between gap-3 border-t-2 border-ink-100 pt-2">
           <dt className="font-bold text-ink-900">결제 금액</dt>
           <dd className="text-lg font-bold text-poke-600 tabular-nums">
             {formatPrice(order.total_amount)}

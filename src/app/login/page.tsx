@@ -7,7 +7,8 @@ export const metadata = { title: "로그인 — 포켓몬 카드샵" };
 export default function LoginPage() {
   return (
     <div className="mx-auto max-w-sm">
-      <h1 className="text-2xl font-bold text-ink-900">다시 오셨네요</h1>
+      <span className="ribbon cut-sm">LOGIN</span>
+      <h1 className="mt-2.5 text-[1.7rem] font-black tracking-tight text-ink-900">다시 오셨네요</h1>
       <p className="mt-2 text-sm text-ink-600">
         포켓몬 카드샵 계정으로 로그인하세요.
       </p>

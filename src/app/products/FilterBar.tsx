@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconSearch } from "@/components/Icons";
 import {
   CARD_TYPES,
   CARD_TYPE_KEYS,
@@ -21,7 +22,7 @@ function ChipRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="w-14 shrink-0 pt-2 text-[0.78rem] font-semibold text-ink-500">
+      <span className="w-14 shrink-0 pt-2 text-[0.75rem] font-extrabold tracking-tight text-ink-900">
         {title}
       </span>
       <div className="no-scrollbar -my-1 flex-1 overflow-x-auto py-1">
@@ -56,7 +57,8 @@ export default function FilterBar({
         {filters.price && <input type="hidden" name="price" value={filters.price} />}
         {filters.sort !== "new" && <input type="hidden" name="sort" value={filters.sort} />}
         {filters.soldout && <input type="hidden" name="soldout" value="1" />}
-        <button type="submit" className="btn btn-outline">
+        <button type="submit" className="btn btn-primary shrink-0">
+          <IconSearch className="h-4 w-4" />
           검색
         </button>
       </form>
@@ -94,7 +96,9 @@ export default function FilterBar({
             href={productsHref(filters, { type: key })}
             className={`chip gap-1.5 ${filters.type === key ? "chip-on" : ""}`}
           >
-            <span className={`h-2.5 w-2.5 rounded-full ${CARD_TYPES[key].dot}`} />
+            <span
+              className={`h-2.5 w-2.5 rounded-full border border-ink-900/40 ${CARD_TYPES[key].dot}`}
+            />
             {CARD_TYPES[key].label}
           </Link>
         ))}

@@ -101,7 +101,7 @@ export default function ImageUploader({
       <input type="hidden" name="imagePath" value={path} />
 
       {url ? (
-        <div className="relative w-36 overflow-hidden rounded-xl border border-ink-200">
+        <div className="relative w-36 overflow-hidden rounded-lg border-2 border-ink-900">
           <Image
             src={url}
             alt="올린 사진 미리보기"
@@ -137,7 +137,7 @@ export default function ImageUploader({
         </label>
       )}
 
-      {error && <p className="mt-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="mt-2 text-sm font-semibold text-poke-800">{error}</p>}
     </div>
   );
 }

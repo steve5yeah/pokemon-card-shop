@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------
-   포켓몬 색 — 몬스터볼 빨강, 피카츄 노랑, 카드 테두리 남색.
-   Tailwind v4는 @theme 안의 변수를 그대로 유틸리티로 만들어 줍니다.
+/* ═══════════════════════════════════════════════════════════════
+   포켓몬 카드샵 디자인 토큰
+
+   레퍼런스로 삼은 것
+     · 포켓몬 공식 사이트 — 두꺼운 검정 아웃라인, 모서리를 비스듬히
+       잘라낸 각진 버튼, 흑백 대비가 센 블록
+     · 진짜 포켓몬 카드 — 금색(노란) 테두리. 이게 "카드처럼 보이게"
+       만드는 가장 큰 요소입니다.
+
+   Tailwind v4 는 @theme 안의 변수를 그대로 유틸리티로 만들어 줍니다.
    예) --color-poke-500  ->  bg-poke-500 / text-poke-500
---------------------------------------------------------------- */
+═══════════════════════════════════════════════════════════════ */
 @theme {
   /* 몬스터볼 빨강 — 주요 버튼과 강조 */
   --color-poke-50: #fff1f1;
@@ -18,7 +25,7 @@
   --color-poke-800: #8e1111;
   --color-poke-900: #761414;
 
-  /* 피카츄 노랑 — 배지와 포인트 */
+  /* 피카츄 노랑 — 배지와 포인트, 그리고 카드 테두리 */
   --color-volt-50: #fffbe8;
   --color-volt-100: #fff5c2;
   --color-volt-200: #ffea85;
@@ -30,7 +37,7 @@
   --color-volt-800: #864e08;
   --color-volt-900: #72400c;
 
-  /* 남색 섞인 회색 — 글자와 테두리 */
+  /* 남색 섞인 회색 — 글자와 테두리. 950 은 어두운 쇼케이스 배경용 */
   --color-ink-50: #f6f7f9;
   --color-ink-100: #eceef2;
   --color-ink-200: #d6dae3;
@@ -39,15 +46,21 @@
   --color-ink-500: #687493;
   --color-ink-600: #525c79;
   --color-ink-700: #434b62;
-  --color-ink-800: #3a4052;
-  --color-ink-900: #1b2233;
+  --color-ink-800: #2b3145;
+  --color-ink-900: #171c2c;
+  --color-ink-950: #0a0e1c;
 
   --font-sans: var(--font-noto-kr), -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 
-  /* 그림자는 얕고 차갑게 — 검정 대신 남색을 섞습니다 */
-  --shadow-soft: 0 1px 2px rgba(27, 34, 51, 0.04), 0 4px 16px rgba(27, 34, 51, 0.06);
-  --shadow-lift: 0 2px 6px rgba(27, 34, 51, 0.07), 0 14px 30px rgba(27, 34, 51, 0.11);
+  /* 부드러운 그림자 — 어두운 영역 안에서 쓸 때 */
+  --shadow-soft: 0 1px 2px rgba(10, 14, 28, 0.05), 0 6px 20px rgba(10, 14, 28, 0.07);
+  --shadow-lift: 0 4px 10px rgba(10, 14, 28, 0.1), 0 18px 38px rgba(10, 14, 28, 0.16);
+
+  /* 딱 떨어지는 그림자 — 스티커처럼 톡 튀어나와 보이게 합니다.
+     흐림(blur) 없이 그대로 밀어낸 검정이라 아웃라인과 잘 어울립니다. */
+  --shadow-hard: 3px 3px 0 var(--color-ink-900);
+  --shadow-hard-lg: 5px 5px 0 var(--color-ink-900);
 }
 
 html {
@@ -55,16 +68,55 @@ html {
 }
 
 body {
-  background-color: #fbfbfd;
-  /* 위쪽에 몬스터볼 색이 은은하게 번지도록 두 겹을 겹칩니다 */
-  background-image:
-    radial-gradient(900px 420px at 18% -260px, var(--color-poke-100) 0%, transparent 70%),
-    radial-gradient(900px 420px at 82% -280px, var(--color-volt-100) 0%, transparent 70%);
-  background-repeat: no-repeat;
+  background-color: #f7f8fb;
+  /* 아주 연한 점 격자 — 카드 진열대 느낌의 바탕 무늬 */
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(23, 28, 44, 0.07) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
   color: var(--color-ink-900);
   font-family: var(--font-sans);
   word-break: keep-all; /* 한글 단어가 중간에서 끊기지 않게 */
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+}
+
+/* ─────────────────────── 모서리를 잘라낸 모양 ───────────────────────
+   포켓몬 공식 사이트의 버튼·배너가 쓰는 모양입니다.
+   오른쪽 아래 귀퉁이를 비스듬히 잘라 각진 인상을 줍니다.
+
+   ⚠️ clip-path 는 테두리(border)까지 같이 잘라 버립니다.
+      그래서 **배경이 꽉 찬 요소**에만 씁니다. 테두리로 보여 주는
+      버튼(.btn-outline)은 대신 각진 사각형 + 하드 그림자로 갑니다. */
+.cut {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 0.7rem),
+    calc(100% - 0.7rem) 100%,
+    0 100%
+  );
+}
+.cut-sm {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 0.45rem),
+    calc(100% - 0.45rem) 100%,
+    0 100%
+  );
+}
+/* 왼쪽 위도 함께 잘라 평행사변형에 가까운 모양 (섹션 라벨용) */
+.cut-both {
+  clip-path: polygon(
+    0.7rem 0,
+    100% 0,
+    100% calc(100% - 0.7rem),
+    calc(100% - 0.7rem) 100%,
+    0 100%,
+    0 0.7rem
+  );
 }
 
 /* components 안에 두면 Tailwind 유틸리티(hidden, w-full 등)가
@@ -75,21 +127,23 @@ body {
 
 .field {
   width: 100%;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-ink-200);
+  border-radius: 0.6rem;
+  border: 2px solid var(--color-ink-900);
   background: #fff;
   padding: 0.7rem 0.875rem;
   font-size: 0.95rem;
+  font-weight: 500;
   color: var(--color-ink-900);
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 .field::placeholder {
   color: var(--color-ink-400);
+  font-weight: 400;
 }
 .field:focus {
-  border-color: var(--color-poke-400);
-  box-shadow: 0 0 0 3px var(--color-poke-100);
+  border-color: var(--color-poke-500);
+  box-shadow: 3px 3px 0 var(--color-poke-500);
 }
 
 /* ----------------------------- 버튼 ----------------------------- */
@@ -99,68 +153,137 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  border-radius: 0.75rem;
-  padding: 0.7rem 1.1rem;
+  border-radius: 0.6rem;
+  padding: 0.7rem 1.15rem;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
   transition: background-color 0.15s ease, border-color 0.15s ease,
-    color 0.15s ease, transform 0.08s ease;
-}
-.btn:active {
-  transform: translateY(1px);
-}
-.btn:disabled {
-  cursor: not-allowed;
-  transform: none;
+    color 0.15s ease, box-shadow 0.12s ease, transform 0.12s ease;
 }
 
+/* 빨간 채움 버튼 — 가장 중요한 동작(담기 · 결제 · 가입) */
 .btn-primary {
+  border: 2px solid var(--color-ink-900);
   background: var(--color-poke-500);
   color: #fff;
+  box-shadow: var(--shadow-hard);
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--color-poke-600);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-lg);
+}
+.btn-primary:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-ink-900);
 }
 .btn-primary:disabled {
-  background: var(--color-poke-300);
+  background: var(--color-ink-300);
+  border-color: var(--color-ink-400);
+  color: var(--color-ink-50);
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
+/* 흰 배경 + 검정 테두리 — 보조 동작 */
 .btn-outline {
-  border: 1px solid var(--color-ink-200);
+  border: 2px solid var(--color-ink-900);
   background: #fff;
-  color: var(--color-ink-700);
+  color: var(--color-ink-900);
+  box-shadow: var(--shadow-hard);
 }
 .btn-outline:hover:not(:disabled) {
-  background: var(--color-ink-50);
-  border-color: var(--color-ink-300);
+  background: var(--color-volt-100);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-lg);
+}
+.btn-outline:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-ink-900);
 }
 .btn-outline:disabled {
-  opacity: 0.55;
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
+/* 노란 채움 버튼 — 눈에 띄되 "결제"만큼 무겁지 않은 동작 */
+.btn-volt {
+  border: 2px solid var(--color-ink-900);
+  background: var(--color-volt-400);
+  color: var(--color-ink-900);
+  box-shadow: var(--shadow-hard);
+}
+.btn-volt:hover:not(:disabled) {
+  background: var(--color-volt-300);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-lg);
+}
+.btn-volt:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-ink-900);
+}
+.btn-volt:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* 테두리 없는 버튼 — 메뉴처럼 가벼운 이동 */
 .btn-ghost {
-  color: var(--color-ink-600);
+  border: 2px solid transparent;
+  color: var(--color-ink-700);
 }
 .btn-ghost:hover:not(:disabled) {
-  background: var(--color-poke-50);
-  color: var(--color-poke-700);
+  border-color: var(--color-ink-900);
+  background: #fff;
+  color: var(--color-ink-900);
+}
+.btn-ghost:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .btn-sm {
-  padding: 0.45rem 0.75rem;
-  font-size: 0.825rem;
-  border-radius: 0.6rem;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
+}
+.btn-sm.btn-primary,
+.btn-sm.btn-outline,
+.btn-sm.btn-volt {
+  box-shadow: 2px 2px 0 var(--color-ink-900);
+}
+.btn-sm.btn-primary:hover:not(:disabled),
+.btn-sm.btn-outline:hover:not(:disabled),
+.btn-sm.btn-volt:hover:not(:disabled) {
+  box-shadow: 3px 3px 0 var(--color-ink-900);
+}
+.btn-sm.btn-primary:active:not(:disabled),
+.btn-sm.btn-outline:active:not(:disabled),
+.btn-sm.btn-volt:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--color-ink-900);
 }
 
-/* ----------------------------- 카드 ----------------------------- */
+/* ----------------------------- 상자 ----------------------------- */
 
 .card {
-  border-radius: 1rem;
-  border: 1px solid var(--color-ink-200);
+  border-radius: 0.9rem;
+  border: 2px solid var(--color-ink-900);
   background: #fff;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-hard);
+}
+
+/* 강조용 상자 — 합계처럼 결론을 담는 칸 */
+.card-dark {
+  border-radius: 0.9rem;
+  border: 2px solid var(--color-ink-900);
+  background: var(--color-ink-950);
+  color: #fff;
+  box-shadow: var(--shadow-hard);
 }
 
 /* --------------------------- 작은 조각 --------------------------- */
@@ -169,28 +292,40 @@ body {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  border: 1px solid var(--color-ink-200);
+  border: 2px solid var(--color-ink-900);
   background: #fff;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.825rem;
-  color: var(--color-ink-600);
+  padding: 0.38rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-ink-800);
   white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease,
-    border-color 0.15s ease;
+    transform 0.12s ease;
 }
 .chip:hover {
-  background: var(--color-poke-50);
-  border-color: var(--color-poke-200);
+  background: var(--color-volt-200);
+  transform: translateY(-1px);
 }
 .chip-on {
   background: var(--color-ink-900);
-  border-color: var(--color-ink-900);
-  color: #fff;
-  font-weight: 600;
+  color: var(--color-volt-300);
 }
 .chip-on:hover {
   background: var(--color-ink-900);
-  border-color: var(--color-ink-900);
+  color: var(--color-volt-300);
+}
+
+/* 섹션 제목 옆에 붙는 검정 라벨 — 포켓몬 공식 사이트의 각진 블록 */
+.ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-ink-900);
+  color: var(--color-volt-300);
+  padding: 0.3rem 0.85rem 0.3rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
 }
 
 }
@@ -203,48 +338,135 @@ body {
   display: none;
 }
 
-/* ───────────────────── 트레이딩 카드 ─────────────────────
-   실제 포켓몬 카드처럼 보이도록 그림 영역에 타입 색을 깔고,
-   희귀도가 높은 카드에는 홀로그램 반짝임을 얹습니다.
-   (@layer components 밖에 두었으므로 Tailwind 유틸리티보다 이쪽이 이깁니다) */
+/* ═══════════════════ 진짜 카드처럼 보이게 ═══════════════════
+   실제 포켓몬 카드는 **금색(노란) 테두리** 안에 그림이 들어갑니다.
+   그 구조를 그대로 흉내 냅니다.
 
-.poke-card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.poke-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lift);
+     .tcg        바깥 금테 (padding 이 테두리 두께가 됩니다)
+     └ .tcg-in   안쪽 그림판 (타입 색을 여기에 깝니다)
+
+   @layer components 밖에 두었으므로 Tailwind 유틸리티보다 이쪽이 이깁니다. */
+
+.tcg {
+  position: relative;
+  padding: 5px;
+  border-radius: 0.65rem;
+  border: 2px solid var(--color-ink-900);
+  /* 금속 느낌이 나도록 밝은 노랑과 진한 금색을 번갈아 둡니다 */
+  background: linear-gradient(
+    150deg,
+    #ffe480 0%,
+    #f2b705 28%,
+    #ffeaa0 48%,
+    #e0a100 72%,
+    #ffd84d 100%
+  );
 }
 
-/* 카드 그림이 들어가는 액자 */
-.poke-art {
+.tcg-in {
   position: relative;
   overflow: hidden;
-  border-radius: 0.7rem;
-  box-shadow: inset 0 0 0 1px rgba(27, 34, 51, 0.08);
+  border-radius: 0.35rem;
+  box-shadow: inset 0 0 0 1.5px rgba(23, 28, 44, 0.45);
 }
 
-/* 홀로그램 — 아트레어 이상에만 붙입니다 */
-.poke-holo::after {
+/**
+ * 목록에 들어가는 작은 카드 그림 (장바구니 · 주문내역 · 관리자)
+ *
+ * 큰 카드(.tcg)처럼 두 겹으로 만들면 이 크기에서는 너무 복잡해집니다.
+ * 그래서 한 겹으로 두고, 안쪽에 금색 테를 그림자로 그려 넣었습니다.
+ */
+.thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  border: 2px solid var(--color-ink-900);
+  box-shadow: inset 0 0 0 3px #f2b705;
+}
+
+/* 카드 전체가 살짝 떠오르는 움직임 */
+.poke-card {
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.poke-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hard-lg);
+}
+
+/* ── 홀로그램 ── 아트레어 이상 등급에만 붙입니다.
+   무지개 빛이 카드 위를 대각선으로 지나가는 것처럼 보이게 합니다. */
+.holo::after {
   content: "";
   position: absolute;
-  inset: -25%;
-  background: conic-gradient(
-    from 200deg,
-    transparent 0deg,
-    rgba(255, 255, 255, 0.75) 35deg,
-    transparent 75deg,
-    rgba(125, 211, 252, 0.55) 150deg,
-    transparent 205deg,
-    rgba(240, 171, 252, 0.55) 285deg,
-    transparent 340deg
-  );
+  inset: 0;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.55) 35%,
+      rgba(125, 211, 252, 0.45) 43%,
+      rgba(240, 171, 252, 0.45) 50%,
+      rgba(253, 224, 71, 0.45) 57%,
+      rgba(255, 255, 255, 0.5) 65%,
+      transparent 80%
+    );
+  background-size: 250% 250%;
+  background-position: 0% 50%;
   mix-blend-mode: soft-light;
-  opacity: 0.5;
-  transition: opacity 0.3s ease, transform 0.6s ease;
+  opacity: 0.85;
+  transition: background-position 0.75s ease, opacity 0.3s ease;
   pointer-events: none;
+  z-index: 2;
 }
-.poke-card:hover .poke-holo::after {
+.poke-card:hover .holo::after {
+  background-position: 100% 50%;
   opacity: 1;
-  transform: rotate(35deg) scale(1.15);
+}
+
+/* 촘촘한 빗금 반짝이 — 홀로 카드 위에 한 겹 더 */
+.holo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.22) 0px,
+    rgba(255, 255, 255, 0.22) 1px,
+    transparent 1px,
+    transparent 5px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ═══════════════════ 어두운 쇼케이스 ═══════════════════
+   첫 화면처럼 카드를 돋보이게 해야 하는 자리에 씁니다. */
+
+.night {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-ink-950);
+  background-image:
+    radial-gradient(760px 420px at 15% 0%, rgba(238, 21, 21, 0.4) 0%, transparent 65%),
+    radial-gradient(680px 420px at 88% 12%, rgba(255, 203, 5, 0.26) 0%, transparent 62%),
+    radial-gradient(520px 340px at 50% 110%, rgba(99, 102, 241, 0.32) 0%, transparent 70%);
+  color: #fff;
+}
+
+/* 어두운 배경 위에 뿌리는 작은 별빛 */
+.night-stars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255, 255, 255, 0.85) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 78% 12%, rgba(255, 255, 255, 0.7) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 34% 72%, rgba(255, 255, 255, 0.6) 50%, transparent 50%),
+    radial-gradient(2px 2px at 63% 46%, rgba(255, 255, 255, 0.55) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 90% 68%, rgba(255, 255, 255, 0.5) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 22% 44%, rgba(255, 255, 255, 0.45) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 50% 88%, rgba(255, 255, 255, 0.4) 50%, transparent 50%);
+  pointer-events: none;
 }

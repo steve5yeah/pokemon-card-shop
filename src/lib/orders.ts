@@ -1,11 +1,14 @@
-/** 주문 상태 라벨과 배지 색 */
+/**
+ * 주문 상태 라벨과 배지 색.
+ * 테두리를 함께 넣어 흰 배경에서도 또렷하게 보이게 합니다.
+ */
 export const ORDER_STATUSES = {
-  pending:   { label: "결제 대기",   badge: "bg-ink-100 text-ink-600" },
-  paid:      { label: "결제 완료",   badge: "bg-emerald-100 text-emerald-800" },
-  shipped:   { label: "배송 중",     badge: "bg-sky-100 text-sky-800" },
-  done:      { label: "배송 완료",   badge: "bg-ink-900 text-white" },
-  cancelled: { label: "주문 취소",   badge: "bg-ink-100 text-ink-500" },
-  failed:    { label: "결제 실패",   badge: "bg-red-100 text-red-700" },
+  pending:   { label: "결제 대기",   badge: "border border-ink-900 bg-white text-ink-800" },
+  paid:      { label: "결제 완료",   badge: "border border-ink-900 bg-emerald-400 text-emerald-950" },
+  shipped:   { label: "배송 중",     badge: "border border-ink-900 bg-sky-400 text-sky-950" },
+  done:      { label: "배송 완료",   badge: "border border-ink-900 bg-ink-900 text-volt-300" },
+  cancelled: { label: "주문 취소",   badge: "border border-ink-300 bg-ink-100 text-ink-500" },
+  failed:    { label: "결제 실패",   badge: "border border-poke-600 bg-poke-500 text-white" },
 } as const;
 
 export type OrderStatus = keyof typeof ORDER_STATUSES;

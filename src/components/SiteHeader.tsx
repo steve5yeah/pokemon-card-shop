@@ -4,6 +4,7 @@ import { signOut } from "@/app/auth/actions";
 import { isAdmin } from "@/lib/admin";
 import PokeballLogo from "./PokeballLogo";
 import MobileNav from "./MobileNav";
+import { IconCart } from "./Icons";
 
 export default async function SiteHeader() {
   const supabase = await createClient();
@@ -34,12 +35,19 @@ export default async function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 border-b border-ink-200/60 bg-[#fbfbfd]/85 backdrop-blur-md">
+      {/* 맨 위 검정 띠 — 포켓몬 공식 사이트처럼 굵은 블록으로 시작합니다 */}
+      <div className="bg-ink-950 text-center text-[0.68rem] font-bold tracking-[0.12em] text-volt-300">
+        <p className="py-1.5">5만원 이상 구매 시 무료배송 · 토스 안전결제</p>
+      </div>
+
+      {/* 배경을 반투명 + 흐림으로 두면 기기에 따라 글자가 배경과 겹쳐 보입니다.
+          위로 스크롤되는 카드가 헤더 밑으로 비쳐야 할 이유도 없으니 흰색으로 꽉 채웁니다. */}
+      <header className="sticky top-0 z-20 border-b-[3px] border-ink-900 bg-white">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
-              <PokeballLogo size={27} />
-              <span className="text-[1.05rem] font-bold tracking-tight text-ink-900">
+          <div className="flex items-center gap-5">
+            <Link href="/" className="flex shrink-0 items-center gap-2">
+              <PokeballLogo size={30} />
+              <span className="text-[1.08rem] font-black tracking-tight text-ink-900">
                 포켓몬 카드샵
               </span>
             </Link>
@@ -54,10 +62,7 @@ export default async function SiteHeader() {
                 </Link>
               )}
               {admin && (
-                <Link
-                  href="/admin"
-                  className="btn btn-sm bg-ink-900 text-volt-300 hover:bg-ink-800"
-                >
+                <Link href="/admin" className="btn btn-sm btn-volt">
                   관리자
                 </Link>
               )}
@@ -71,9 +76,10 @@ export default async function SiteHeader() {
                   href="/cart"
                   className="btn btn-outline btn-sm hidden sm:inline-flex"
                 >
-                  🛒 장바구니
+                  <IconCart className="h-4 w-4" />
+                  장바구니
                   {cartCount > 0 && (
-                    <span className="rounded-full bg-poke-500 px-1.5 py-0.5 text-[0.65rem] font-bold leading-none text-white">
+                    <span className="rounded-full border border-ink-900 bg-poke-500 px-1.5 py-0.5 text-[0.62rem] font-extrabold leading-none text-white">
                       {cartCount}
                     </span>
                   )}
@@ -82,10 +88,10 @@ export default async function SiteHeader() {
                   href="/mypage"
                   className="btn btn-ghost btn-sm max-w-[9rem] truncate"
                 >
-                  <span className="truncate font-semibold text-poke-700">
+                  <span className="truncate font-extrabold text-ink-900">
                     {nickname ?? "트레이너"}
                   </span>
-                  <span className="text-ink-500">님</span>
+                  <span className="font-medium text-ink-500">님</span>
                 </Link>
                 <form action={signOut} className="hidden sm:block">
                   <button type="submit" className="btn btn-outline btn-sm">

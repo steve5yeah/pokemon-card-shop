@@ -58,7 +58,7 @@ export default async function AdminOrdersPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-ink-900">주문 관리</h1>
+      <h1 className="text-[1.7rem] font-black tracking-tight text-ink-900">주문 관리</h1>
       <p className="mt-1.5 text-sm text-ink-600">{orders.length}건</p>
 
       <div className="no-scrollbar mt-4 -my-1 overflow-x-auto py-1">
@@ -78,7 +78,7 @@ export default async function AdminOrdersPage({
       </div>
 
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="mt-4 rounded-lg border-2 border-poke-500 bg-poke-50 px-4 py-3 text-sm font-semibold text-poke-800">
           주문을 불러오지 못했습니다: {error.message}
         </p>
       )}
@@ -121,7 +121,7 @@ export default async function AdminOrdersPage({
                   </p>
                 </div>
 
-                <div className="mt-3 border-t border-ink-100 pt-3">
+                <div className="mt-3 border-t-2 border-ink-100 pt-3">
                   <OrderStatusControls
                     orderNo={order.order_no}
                     status={order.status}

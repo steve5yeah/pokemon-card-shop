@@ -60,7 +60,7 @@ export default async function AdminOrderDetailPage({
 
       {/* 주문한 카드 */}
       <div className="card mt-4 px-4">
-        <ul className="divide-y divide-ink-100">
+        <ul className="divide-y-2 divide-ink-100">
           {order.order_items.map((item) => (
             <li
               key={item.id}
@@ -95,7 +95,7 @@ export default async function AdminOrderDetailPage({
             {formatPrice(order.shipping_fee)}
           </dd>
         </div>
-        <div className="flex items-baseline justify-between border-t border-ink-100 pt-2.5">
+        <div className="flex items-baseline justify-between border-t-2 border-ink-100 pt-2.5">
           <dt className="font-bold text-ink-900">결제 금액</dt>
           <dd className="text-lg font-bold text-poke-600 tabular-nums">
             {formatPrice(order.total_amount)}

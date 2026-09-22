@@ -26,7 +26,7 @@ export default async function MyPageEditPage() {
       >
         ← 내 정보
       </Link>
-      <h1 className="mt-4 text-2xl font-bold text-ink-900">내 정보 고치기</h1>
+      <h1 className="mt-4 text-[1.7rem] font-black tracking-tight text-ink-900">내 정보 고치기</h1>
 
       <div className="card mt-5 p-5">
         <ProfileForm

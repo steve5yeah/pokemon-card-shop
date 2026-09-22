@@ -111,12 +111,12 @@ export default function ProfileForm({
       </p>
 
       {state.error && (
-        <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-lg border-2 border-poke-500 bg-poke-50 px-3 py-2 text-sm font-semibold text-poke-800">
           {state.error}
         </p>
       )}
       {state.notice && (
-        <p className="rounded-xl bg-poke-50 px-3 py-2 text-sm text-poke-800">
+        <p className="rounded-lg border-2 border-poke-300 bg-poke-50 px-3 py-2 text-sm text-poke-800">
           ✅ {state.notice}
         </p>
       )}

@@ -34,7 +34,7 @@ export default async function EditProductPage({
       >
         ← 카드 관리
       </Link>
-      <h1 className="mt-4 text-2xl font-bold text-ink-900">카드 수정</h1>
+      <h1 className="mt-4 text-[1.7rem] font-black tracking-tight text-ink-900">카드 수정</h1>
       <p className="mt-1.5 text-sm text-ink-500">{product.name}</p>
 
       <div className="card mt-5 p-5">

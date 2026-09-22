@@ -57,7 +57,7 @@ export default function AdminProductRow({
       className={`flex flex-wrap items-center gap-3 py-3.5 transition-opacity ${pending ? "opacity-40" : ""}`}
     >
       {/* 그림 */}
-      <div className="poke-art h-16 w-12 shrink-0 bg-ink-50">
+      <div className="thumb h-16 w-12 shrink-0 bg-ink-50">
         {image ? (
           <Image
             src={image}
@@ -141,7 +141,7 @@ export default function AdminProductRow({
       </button>
 
       {error && (
-        <p className="w-full text-xs text-red-700">{error}</p>
+        <p className="w-full text-xs font-semibold text-poke-800">{error}</p>
       )}
     </li>
   );

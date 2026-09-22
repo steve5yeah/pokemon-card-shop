@@ -86,14 +86,14 @@ export default async function OrderDetailPage({
       </div>
 
       {order.status === "failed" && order.fail_code && (
-        <div className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mt-4 rounded-lg border-2 border-poke-500 bg-poke-50 px-4 py-3 text-sm font-semibold text-poke-800">
           결제가 완료되지 않은 주문입니다. (코드: {order.fail_code})
         </div>
       )}
 
       {/* ── 주문한 카드 ── */}
       <div className="card mt-5 px-4">
-        <ul className="divide-y divide-ink-100">
+        <ul className="divide-y-2 divide-ink-100">
           {order.order_items.map((item) => {
             const image = cardImage({
               image_url: item.product_image_url,
@@ -101,7 +101,7 @@ export default async function OrderDetailPage({
             });
             return (
               <li key={item.id} className="flex items-center gap-3 py-3.5">
-                <div className="poke-art h-20 w-[3.75rem] shrink-0 bg-ink-50">
+                <div className="thumb h-20 w-[3.75rem] shrink-0 bg-ink-50">
                   {image ? (
                     <Image
                       src={image}
@@ -160,7 +160,7 @@ export default async function OrderDetailPage({
             )}
           </dd>
         </div>
-        <div className="flex items-baseline justify-between border-t border-ink-100 pt-2.5">
+        <div className="flex items-baseline justify-between border-t-2 border-ink-100 pt-2.5">
           <dt className="font-bold text-ink-900">결제 금액</dt>
           <dd className="text-lg font-bold text-poke-600 tabular-nums">
             {formatPrice(order.total_amount)}
@@ -225,7 +225,7 @@ export default async function OrderDetailPage({
             <dd className="text-right font-medium text-ink-800">{order.memo}</dd>
           </div>
         )}
-        <div className="flex justify-between gap-3 border-t border-ink-100 pt-2.5">
+        <div className="flex justify-between gap-3 border-t-2 border-ink-100 pt-2.5">
           <dt className="text-ink-500">주문 시각</dt>
           <dd className="font-medium text-ink-800">
             {formatDateTime(order.created_at)}

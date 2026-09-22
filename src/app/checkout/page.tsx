@@ -47,13 +47,14 @@ export default async function CheckoutPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-ink-900">주문서</h1>
+      <span className="ribbon cut-sm">ORDER</span>
+      <h1 className="mt-2.5 text-[1.7rem] font-black tracking-tight text-ink-900">주문서</h1>
       <p className="mt-1.5 text-sm text-ink-600">
         배송지를 확인하고 결제 화면으로 넘어갑니다.
       </p>
 
       {shortages.length > 0 && (
-        <div className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mt-5 rounded-lg border-2 border-poke-500 bg-poke-50 px-4 py-3 text-sm font-semibold text-poke-800">
           <p className="font-semibold">재고가 모자란 카드가 있습니다</p>
           <ul className="mt-1 list-inside list-disc">
             {shortages.map((line) => (
@@ -103,7 +104,7 @@ export default async function CheckoutPage() {
             ))}
           </ul>
 
-          <dl className="space-y-2 border-t border-ink-100 pt-3 text-sm">
+          <dl className="space-y-2 border-t-2 border-ink-100 pt-3 text-sm">
             <div className="flex justify-between">
               <dt className="text-ink-600">
                 카드값 ({totals.kinds}종 {totals.pieces}장)
@@ -125,13 +126,13 @@ export default async function CheckoutPage() {
           </dl>
 
           {totals.freeShippingLeft > 0 && (
-            <p className="rounded-xl bg-volt-50 px-3 py-2 text-[0.8rem] leading-relaxed text-volt-800">
+            <p className="rounded-lg border-2 border-volt-500 bg-volt-50 px-3 py-2 text-[0.8rem] leading-relaxed font-semibold text-volt-900">
               {formatPrice(totals.freeShippingLeft)} 더 담으면 배송비가
               무료입니다. ({formatPrice(FREE_SHIPPING_OVER)} 이상)
             </p>
           )}
 
-          <div className="flex items-baseline justify-between border-t border-ink-100 pt-3">
+          <div className="flex items-baseline justify-between border-t-2 border-ink-100 pt-3">
             <span className="font-bold text-ink-900">결제 금액</span>
             <span className="text-xl font-bold text-poke-600 tabular-nums">
               {formatPrice(totals.totalAmount)}

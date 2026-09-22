@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { IconCart } from "@/components/Icons";
 import { addToCart, type CartActionState } from "./actions";
 
 const initialState: CartActionState = {};
@@ -14,9 +15,16 @@ function SubmitPart({ disabled }: { disabled: boolean }) {
     <button
       type="submit"
       disabled={pending || disabled}
-      className="btn btn-primary w-full py-3"
+      className="btn btn-primary w-full py-3.5"
     >
-      {pending ? "담는 중…" : "🛒 장바구니 담기"}
+      {pending ? (
+        "담는 중…"
+      ) : (
+        <>
+          <IconCart className="h-[1.1rem] w-[1.1rem]" />
+          장바구니 담기
+        </>
+      )}
     </button>
   );
 }
@@ -41,7 +49,7 @@ export default function AddToCartButton({
         <input type="hidden" name="quantity" value={quantity} />
 
         {/* 수량 고르기 */}
-        <div className="flex items-center justify-between rounded-xl border border-ink-200 bg-white px-3 py-2">
+        <div className="flex items-center justify-between rounded-lg border-2 border-ink-900 bg-white px-3 py-2">
           <span className="text-sm text-ink-600">수량</span>
           <div className="flex items-center gap-1">
             <button
@@ -72,13 +80,13 @@ export default function AddToCartButton({
       </form>
 
       {state.error && (
-        <p className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-2 rounded-lg border-2 border-poke-500 bg-poke-50 px-3 py-2 text-sm font-semibold text-poke-800">
           {state.error}
         </p>
       )}
 
       {state.notice && (
-        <div className="mt-2 rounded-xl bg-poke-50 px-3 py-2.5 text-sm text-poke-800">
+        <div className="mt-2 rounded-lg border-2 border-poke-300 bg-poke-50 px-3 py-2.5 text-sm text-poke-800">
           <p className="font-semibold">✅ {state.notice}</p>
           <Link
             href="/cart"

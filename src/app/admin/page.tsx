@@ -63,7 +63,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-ink-900">대시보드</h1>
+      <h1 className="text-[1.7rem] font-black tracking-tight text-ink-900">대시보드</h1>
 
       {/* ── 숫자 4칸 ── */}
       <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -104,7 +104,7 @@ export default async function AdminDashboardPage() {
           {recent.length === 0 ? (
             <p className="mt-4 text-sm text-ink-500">아직 주문이 없습니다.</p>
           ) : (
-            <ul className="mt-3 divide-y divide-ink-100">
+            <ul className="mt-3 divide-y-2 divide-ink-100">
               {recent.map((order) => (
                 <li key={order.order_no} className="py-2.5">
                   <Link
@@ -150,7 +150,7 @@ export default async function AdminDashboardPage() {
               재고가 넉넉합니다. 👍
             </p>
           ) : (
-            <ul className="mt-3 divide-y divide-ink-100">
+            <ul className="mt-3 divide-y-2 divide-ink-100">
               {lowStock.map((product) => (
                 <li
                   key={product.id}
@@ -166,7 +166,7 @@ export default async function AdminDashboardPage() {
                     className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-bold ${
                       product.stock === 0
                         ? "bg-red-100 text-red-700"
-                        : "bg-volt-100 text-volt-800"
+                        : "bg-volt-100 font-semibold text-volt-900"
                     }`}
                   >
                     {product.stock === 0 ? "품절" : product.stock + "장 남음"}
