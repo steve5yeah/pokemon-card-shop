@@ -47,3 +47,32 @@ export function supabasePublicEnv(): SupabasePublicEnv {
   // TypeScript 는 그것을 알지 못하므로 한 번 더 확인해 줍니다.
   return { url: url as string, anonKey: anonKey as string };
 }
+
+/**
+ * 어떤 환경 변수가 들어왔는지 **이름만** 정리해서 돌려줍니다.
+ *
+ * ⚠️ 값은 절대 내보내지 않습니다. 길이만 셉니다.
+ *    배포가 안 될 때 "무엇이 빠졌나"를 화면에서 바로 확인하려고 만든 것입니다.
+ */
+export function envReport(): string {
+  const checks: { name: string; value: string | undefined; note?: string }[] = [
+    { name: "SUPABASE_URL", value: process.env.NEXT_PUBLIC_SUPABASE_URL },
+    { name: "SUPABASE_ANON_KEY", value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY },
+    { name: "TOSS_CLIENT_KEY", value: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY },
+    { name: "SITE_URL", value: process.env.NEXT_PUBLIC_SITE_URL, note: "(비어도 됩니다)" },
+  ];
+
+  const lines = checks.map((check) => {
+    const ok = Boolean(check.value);
+    // 주소는 어느 Supabase 프로젝트인지만 알 수 있게 호스트 앞부분만 보여줍니다.
+    const hint =
+      check.name === "SUPABASE_URL" && check.value
+        ? ` → ${check.value.replace(/^https?:\/\//, "").slice(0, 24)}…`
+        : ok
+          ? ` (${check.value?.length}자)`
+          : "";
+    return `  ${ok ? "있음" : "없음"}  ${check.name}${hint} ${check.note ?? ""}`.trimEnd();
+  });
+
+  return lines.join("\n");
+}
