@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   포켓몬 색 — 몬스터볼 빨강, 피카츄 노랑, 카드 테두리 남색.
+   Tailwind v4는 @theme 안의 변수를 그대로 유틸리티로 만들어 줍니다.
+   예) --color-poke-500  ->  bg-poke-500 / text-poke-500
+--------------------------------------------------------------- */
+@theme {
+  /* 몬스터볼 빨강 — 주요 버튼과 강조 */
+  --color-poke-50: #fff1f1;
+  --color-poke-100: #ffe0e0;
+  --color-poke-200: #ffc5c5;
+  --color-poke-300: #ff9a9a;
+  --color-poke-400: #fa5f5f;
+  --color-poke-500: #ee1515;
+  --color-poke-600: #d00b0b;
+  --color-poke-700: #ad0d0d;
+  --color-poke-800: #8e1111;
+  --color-poke-900: #761414;
+
+  /* 피카츄 노랑 — 배지와 포인트 */
+  --color-volt-50: #fffbe8;
+  --color-volt-100: #fff5c2;
+  --color-volt-200: #ffea85;
+  --color-volt-300: #ffdb40;
+  --color-volt-400: #ffcb05;
+  --color-volt-500: #edb100;
+  --color-volt-600: #cc8a00;
+  --color-volt-700: #a26302;
+  --color-volt-800: #864e08;
+  --color-volt-900: #72400c;
+
+  /* 남색 섞인 회색 — 글자와 테두리 */
+  --color-ink-50: #f6f7f9;
+  --color-ink-100: #eceef2;
+  --color-ink-200: #d6dae3;
+  --color-ink-300: #b3bacb;
+  --color-ink-400: #8994ad;
+  --color-ink-500: #687493;
+  --color-ink-600: #525c79;
+  --color-ink-700: #434b62;
+  --color-ink-800: #3a4052;
+  --color-ink-900: #1b2233;
+
+  --font-sans: var(--font-noto-kr), -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+
+  /* 그림자는 얕고 차갑게 — 검정 대신 남색을 섞습니다 */
+  --shadow-soft: 0 1px 2px rgba(27, 34, 51, 0.04), 0 4px 16px rgba(27, 34, 51, 0.06);
+  --shadow-lift: 0 2px 6px rgba(27, 34, 51, 0.07), 0 14px 30px rgba(27, 34, 51, 0.11);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #fbfbfd;
+  /* 위쪽에 몬스터볼 색이 은은하게 번지도록 두 겹을 겹칩니다 */
+  background-image:
+    radial-gradient(900px 420px at 18% -260px, var(--color-poke-100) 0%, transparent 70%),
+    radial-gradient(900px 420px at 82% -280px, var(--color-volt-100) 0%, transparent 70%);
+  background-repeat: no-repeat;
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  word-break: keep-all; /* 한글 단어가 중간에서 끊기지 않게 */
+  letter-spacing: -0.01em;
+}
+
+/* components 안에 두면 Tailwind 유틸리티(hidden, w-full 등)가
+   이 스타일을 덮어쓸 수 있습니다. 밖에 두면 반대로 이쪽이 이겨 버립니다. */
+@layer components {
+
+/* ------------------------------ 폼 ------------------------------ */
+
+.field {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-ink-200);
+  background: #fff;
+  padding: 0.7rem 0.875rem;
+  font-size: 0.95rem;
+  color: var(--color-ink-900);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field::placeholder {
+  color: var(--color-ink-400);
+}
+.field:focus {
+  border-color: var(--color-poke-400);
+  box-shadow: 0 0 0 3px var(--color-poke-100);
+}
+
+/* ----------------------------- 버튼 ----------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0.75rem;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, transform 0.08s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--color-poke-500);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-poke-600);
+}
+.btn-primary:disabled {
+  background: var(--color-poke-300);
+}
+
+.btn-outline {
+  border: 1px solid var(--color-ink-200);
+  background: #fff;
+  color: var(--color-ink-700);
+}
+.btn-outline:hover:not(:disabled) {
+  background: var(--color-ink-50);
+  border-color: var(--color-ink-300);
+}
+.btn-outline:disabled {
+  opacity: 0.55;
+}
+
+.btn-ghost {
+  color: var(--color-ink-600);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-poke-50);
+  color: var(--color-poke-700);
+}
+
+.btn-sm {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.825rem;
+  border-radius: 0.6rem;
+}
+
+/* ----------------------------- 카드 ----------------------------- */
+
+.card {
+  border-radius: 1rem;
+  border: 1px solid var(--color-ink-200);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+}
+
+/* --------------------------- 작은 조각 --------------------------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--color-ink-200);
+  background: #fff;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.825rem;
+  color: var(--color-ink-600);
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+}
+.chip:hover {
+  background: var(--color-poke-50);
+  border-color: var(--color-poke-200);
+}
+.chip-on {
+  background: var(--color-ink-900);
+  border-color: var(--color-ink-900);
+  color: #fff;
+  font-weight: 600;
+}
+.chip-on:hover {
+  background: var(--color-ink-900);
+  border-color: var(--color-ink-900);
+}
+
+}
+
+/* 가로 스크롤 영역의 스크롤바를 숨깁니다 (필터 줄) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ───────────────────── 트레이딩 카드 ─────────────────────
+   실제 포켓몬 카드처럼 보이도록 그림 영역에 타입 색을 깔고,
+   희귀도가 높은 카드에는 홀로그램 반짝임을 얹습니다.
+   (@layer components 밖에 두었으므로 Tailwind 유틸리티보다 이쪽이 이깁니다) */
+
+.poke-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.poke-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* 카드 그림이 들어가는 액자 */
+.poke-art {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.7rem;
+  box-shadow: inset 0 0 0 1px rgba(27, 34, 51, 0.08);
+}
+
+/* 홀로그램 — 아트레어 이상에만 붙입니다 */
+.poke-holo::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: conic-gradient(
+    from 200deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.75) 35deg,
+    transparent 75deg,
+    rgba(125, 211, 252, 0.55) 150deg,
+    transparent 205deg,
+    rgba(240, 171, 252, 0.55) 285deg,
+    transparent 340deg
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+.poke-card:hover .poke-holo::after {
+  opacity: 1;
+  transform: rotate(35deg) scale(1.15);
+}
