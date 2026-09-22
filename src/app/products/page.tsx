@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PokeballLogo from "@/components/PokeballLogo";
 import { createClient } from "@/lib/supabase/server";
+import { explainSupabaseError } from "@/lib/env";
 import {
   DEFAULT_SORT,
   PRICE_RANGES,
@@ -137,7 +138,7 @@ export default async function ProductsPage({
 
       {error ? (
         <p className="card px-4 py-6 text-center text-sm text-red-700">
-          카드를 불러오지 못했습니다: {error.message}
+          카드를 불러오지 못했습니다: {explainSupabaseError(error.message)}
         </p>
       ) : products.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-ink-200 px-4 py-16 text-center">

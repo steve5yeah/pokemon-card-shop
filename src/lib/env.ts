@@ -19,7 +19,18 @@ export type SupabasePublicEnv = {
 };
 
 /**
- * 승격된 이름 → 원래 이름 순서로 고릅니다.
+ * 접두사 없는 원래 이름 → 승격된 이름 순서로 고릅니다.
+ *
+ * **원래 이름을 먼저 보는 이유**
+ *   승격된 `NEXT_PUBLIC_XXX` 값은 **빌드할 때** 코드에 박힙니다.
+ *   그래서 Vercel 에서 값을 고쳐도, 다시 배포하기 전까지는 박혀 있는
+ *   예전(틀린) 값이 계속 쓰입니다.
+ *   서버는 원래 이름을 실행할 때마다 새로 읽으므로, 그쪽을 먼저 봅니다.
+ *   → 값을 고치면 서버 화면은 다시 배포하지 않아도 바로 고쳐집니다.
+ *
+ *   브라우저에서는 원래 이름이 아예 없으므로(undefined) 자동으로
+ *   승격된 이름으로 넘어갑니다. 단, 브라우저 쪽은 빌드 시점 값이라
+ *   값을 고치면 **반드시 다시 배포**해야 합니다.
  *
  * ⚠️ 반드시 `process.env.NEXT_PUBLIC_XXX` 처럼 **점으로** 읽어서 넘겨야 합니다.
  *    `process.env[이름]` 처럼 대괄호로 읽으면 빌드할 때 값이 치환되지 않아
@@ -29,7 +40,7 @@ function pick(
   fromPublic: string | undefined,
   fromPlain: string | undefined,
 ): string | undefined {
-  return fromPublic || fromPlain;
+  return fromPlain || fromPublic;
 }
 
 export function supabasePublicEnv(): SupabasePublicEnv {
@@ -63,6 +74,25 @@ export function supabasePublicEnv(): SupabasePublicEnv {
   }
 
   return { url: url as string, anonKey: anonKey as string };
+}
+
+/**
+ * Supabase 가 돌려준 오류를 사람이 알아볼 수 있는 안내로 바꿉니다.
+ *
+ * "Invalid API key" 는 키가 **비어 있는 게 아니라 틀렸다**는 뜻입니다.
+ * 흔한 원인은 ① 다른 Supabase 프로젝트의 키를 넣었거나
+ * ② 긴 키를 붙여넣다 잘렸거나 ③ 앞뒤에 공백·줄바꿈이 섞인 경우입니다.
+ */
+export function explainSupabaseError(message: string): string {
+  if (/invalid api key|jwt|jws|apikey|api key/i.test(message)) {
+    return [
+      `${message} — SUPABASE_ANON_KEY 값이 이 프로젝트의 키가 아닙니다.`,
+      "Supabase 대시보드 > Settings > API Keys 에서 이 프로젝트의 키를 다시 복사해",
+      "Vercel(또는 .env.local)의 SUPABASE_ANON_KEY 를 고쳐 주세요.",
+      "짧은 sb_publishable_... 키를 쓰면 붙여넣다 잘릴 걱정이 없습니다.",
+    ].join(" ");
+  }
+  return message;
 }
 
 /**
