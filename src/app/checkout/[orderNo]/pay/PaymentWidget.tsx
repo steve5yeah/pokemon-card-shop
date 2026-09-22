@@ -50,9 +50,13 @@ export default function PaymentWidget({
     if (startedRef.current) return;
     startedRef.current = true;
 
+    // 브라우저에서는 NEXT_PUBLIC_ 이 붙은 이름만 읽을 수 있습니다.
+    // (next.config.ts 가 TOSS_CLIENT_KEY 를 이 이름으로 옮겨 담아 줍니다)
     const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
     if (!clientKey) {
-      setError("결제 설정이 없습니다. 관리자에게 알려 주세요.");
+      setError(
+        "결제 설정(TOSS_CLIENT_KEY)이 비어 있습니다. 환경 변수를 넣고 다시 배포해야 합니다.",
+      );
       return;
     }
 
